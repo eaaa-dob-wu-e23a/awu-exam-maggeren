@@ -131,6 +131,11 @@ eventSchema.pre("save", async function (next) {
   next();
 });
 
+// Middleware to check expiration date before querying
+eventSchema.pre("find", function () {
+  this.where({ date: { $gte: new Date() } });
+});
+
 const Event = mongoose.model("Event", eventSchema);
 
 export const models = [

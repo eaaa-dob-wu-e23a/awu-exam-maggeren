@@ -2,11 +2,15 @@ export default function UserAvatar({ user }) {
   return (
     <div className="relative flex items-center space-x-3 mb-2 ml-1">
       <div className="flex-shrink-0">
-        <img
-          className="inline-block h-10 w-10 rounded-full object-cover"
-          src={user.avatar}
-          alt=""
-        />
+        {user.avatar ? (
+          <img
+            className="inline-block h-10 w-10 rounded-full object-cover"
+            src={user.avatar}
+            alt=""
+          />
+        ) : (
+          avatarFromInitials(user.name)
+        )}
       </div>
       <div className="min-w-0 flex-1">
         <a href="#" className="focus:outline-none">
@@ -15,5 +19,19 @@ export default function UserAvatar({ user }) {
         </a>
       </div>
     </div>
+  );
+}
+
+export function avatarFromInitials(userName, height, width) {
+  const initials = userName
+    .split(" ")
+    .map((name) => name[0])
+    .join("");
+  return (
+    <img
+      src={`https://ui-avatars.com/api/?name=${initials}&size=256&background=6574cd&color=fff`}
+      alt={userName}
+      className="inline-block h-10 w-10 rounded-full object-cover"
+    />
   );
 }

@@ -8,7 +8,7 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import styles from "./tailwind.css";
-import Nav from "./components/Nav";
+import Nav, { NotSignedIn } from "./components/Nav";
 import { authenticator } from "./services/auth.server";
 
 export const links = () => [{ rel: "stylesheet", href: styles }];
@@ -28,9 +28,10 @@ export default function App() {
         <Links />
       </head>
       <body className="h-full">
-        {user ? <Nav /> : null}
-
-        <Outlet />
+        <div className="z-40 relative">{user ? <Nav /> : <NotSignedIn />}</div>
+        <div className="flex-grow mt-16">
+          <Outlet />
+        </div>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

@@ -3,80 +3,186 @@ import { Form, useLoaderData, useNavigate } from "@remix-run/react";
 import mongoose from "mongoose";
 import { useState } from "react";
 import { authenticator } from "../services/auth.server";
+import Calendar from "../components/Calendar";
 
 export function meta() {
   return [
     {
-      title: "Remix Post App - Update",
+      title: "FitMeet - Update Event",
     },
   ];
 }
 
 export async function loader({ request, params }) {
-  await authenticator.isAuthenticated(request, {
-    failureRedirect: "/signin",
+  const authUser = await authenticator.isAuthenticated(request, {
+    failureRedirect: "/s",
   });
+  const event = await mongoose.models.Event.findById(params.eventId).populate(
+    "creator"
+  );
 
-  const post = await mongoose.models.Post.findById(params.postId).populate("user");
-  return json({ post });
-}
-
-export default function UpdatePost() {
-  const { post } = useLoaderData();
-  const [image, setImage] = useState(post.image);
-  const navigate = useNavigate();
-
-  function handleCancel() {
-    navigate(-1);
+  if (authUser._id != event.creator._id) {
+    return redirect(`/events/${params.eventId}`);
   }
 
+  return json({ event });
+}
+
+export default function UpdateEvent() {
+  const { event } = useLoaderData();
+  const dateString = "2024-03-06T23:00:00.000Z";
+  const dateObject = new Date(dateString);
+
+  // Get hours and minutes
+  const hours = dateObject.getHours();
+  const minutes = dateObject.getMinutes();
+
+  // Format the time string
+  const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}`;
+  const user = event.creator;
+  const [image, setImage] = useState(event.image ?? null);
+  const [selectedDate, setSelectedDate] = useState(
+    event.date ? new Date(event.date) : ""
+  );
+  const [location, setLocation] = useState(event.location ?? "");
+
+  const handleDateClick = (date) => {
+    setSelectedDate(date);
+  };
+
+  function handleImageChange(event) {
+    const file = event.target.files[0];
+    if (file.size < 500000) {
+      // image file size must be below 0,5MB
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImage(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      alert("Image size must be less than 0.5MB.");
+      event.target.value = "";
+    }
+  }
   return (
-    <div className="page">
-      <h1>Update Post</h1>
-      <Form id="post-form" method="post">
-        <label htmlFor="caption">Caption</label>
-        <input
-          id="caption"
-          defaultValue={post.caption}
-          name="caption"
-          type="text"
-          aria-label="caption"
-          placeholder="Write a caption..."
-        />
-        <label htmlFor="image">Image URL</label>
-        <input
-          name="image"
-          defaultValue={post.image}
-          type="url"
-          onChange={(e) => setImage(e.target.value)}
-          placeholder="Paste an image URL..."
-        />
+    <>
+      <h1 className="text-3xl font-bold text-black mt-10 mb-4 text-center">
+        Update Meetup
+      </h1>
+      <Form
+        method="post"
+        className="mt-4 flex-col items-center justify-center"
+        encType="multipart/form-data"
+      >
+        <div id="upper-div" className="flex justify-center mt-8">
+          <div
+            id="text-div"
+            className="w-full flex flex-col justify-center ml-10 mr-10"
+          >
+            <label className="block text-lg mb-2 text-gray-700 text-center">
+              Title
+            </label>
+            <input
+              id="title"
+              type="text"
+              name="title"
+              defaultValue={event.title ?? ""}
+              className="block w-full rounded-md border-0 bg-slate-100 py-1.5 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+            />
+            <label
+              className="block text-lg mb-2 text-gray-700 text-center mt-2"
+              htmlFor="text"
+            >
+              Description
+            </label>
+            <textarea
+              id="text"
+              defaultValue={event.description ?? ""}
+              name="description"
+              className="block w-full rounded-md border-0 bg-slate-100 py-1.5 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+            ></textarea>
 
-        <label htmlFor="image-preview">Image Preview</label>
-        <img
-          id="image-preview"
-          className="image-preview"
-          src={image ? image : "https://placehold.co/600x400?text=Paste+an+image+URL"}
-          alt="Choose"
-          onError={(e) => (e.target.src = "https://placehold.co/600x400?text=Error+loading+image")}
-        />
+            <label className="block text-lg mb-2 text-gray-700 text-center mt-2">
+              Location
+            </label>
+            <input
+              id="location"
+              type="adress"
+              name="location"
+              defaultValue={event.location ?? ""}
+              className="block w-full rounded-md border-0 bg-slate-100 py-1.5 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+            />
+          </div>
+          <div id="image-div" className="w-full flex justify-center mt-10">
+            <input
+              className="hidden"
+              id="file_input"
+              name="image"
+              type="file"
+              onChange={handleImageChange}
+            />
+            <img
+              id="image-preview"
+              className="cursor-pointer w-72 h-60 object-cover rounded-lg"
+              src={
+                image
+                  ? image
+                  : "https://placehold.co/600x400/F1F5F9/000000?text=Upload+an+image"
+              }
+              alt="Choose"
+              onError={(e) =>
+                (e.target.src =
+                  "https://placehold.co/600x400?text=Error+loading+image")
+              }
+              onClick={() => document.getElementById("file_input").click()}
+            />
+          </div>
+        </div>
+        <input name="creator" type="hidden" value={user._id ?? ""} />
+        <div className="mt-6 flex items-center">
+          <Calendar
+            selectedDate={selectedDate}
+            className="ml-20 w-full"
+            onDateClick={handleDateClick}
+          />
+          <input name="date" type="hidden" value={selectedDate ?? ""} />
 
-        <input name="uid" type="text" defaultValue={post.uid} hidden />
-        <div className="btns">
-          <button>Save</button>
-          <button type="button" className="btn-cancel" onClick={handleCancel}>
-            Cancel
+          <div className="ml-8 flex flex-col items-center w-full">
+            <label
+              className="block text-lg mb-2 text-gray-700 text-center"
+              htmlFor="time"
+            >
+              Time
+            </label>
+
+            <input
+              id="time"
+              defaultValue={formattedTime ?? ""}
+              type="time"
+              name="time"
+              className="p-3 border border-gray-300 rounded"
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="mt-6  p-3 bg-blue-500 text-white rounded cursor-pointer text-center"
+          >
+            Update Meetup{" "}
           </button>
         </div>
       </Form>
-    </div>
+    </>
   );
 }
-
 export async function action({ request, params }) {
   // Protect the route
   const authUser = await authenticator.isAuthenticated(request, {
-    failureRedirect: "/signin",
+    failureRedirect: "/events",
   });
 
   // Fetch the post to check if the current user is the creator

@@ -1,4 +1,7 @@
 import {
+  Button
+} from "/build/_shared/chunk-55HWAWQI.js";
+import {
   Form,
   NavLink
 } from "/build/_shared/chunk-BAS3MZGV.js";
@@ -39,16 +42,16 @@ if (import.meta) {
     //@ts-expect-error
     "app/components/AuthForm.jsx"
   );
-  import.meta.hot.lastModified = "1709742801484.322";
+  import.meta.hot.lastModified = "1710262226824.6787";
 }
 var AuthForm = ({
   error,
   isSignUp
 }) => {
   return /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "flex justify-center items-center h-screen", children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "w-full max-w-md", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("h1", { className: "text-2xl font-bold mb-4 text-center", children: isSignUp ? "Sign up" : "Sign in" }, void 0, false, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("h1", { className: "text-2xl font-bold mb-2 text-center", children: isSignUp ? "Sign up" : "Sign in" }, void 0, false, {
       fileName: "app/components/AuthForm.jsx",
-      lineNumber: 28,
+      lineNumber: 29,
       columnNumber: 9
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(
@@ -61,46 +64,46 @@ var AuthForm = ({
           isSignUp && /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(import_jsx_dev_runtime.Fragment, { children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("label", { htmlFor: "name", className: "block mt-4", children: "Name" }, void 0, false, {
               fileName: "app/components/AuthForm.jsx",
-              lineNumber: 34,
+              lineNumber: 35,
               columnNumber: 15
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("input", { id: "name", type: "text", name: "name", "aria-label": "name", placeholder: "Type your name...", required: true, autoComplete: "off", className: "border border-gray-300 rounded-md px-2 py-1 mt-1" }, void 0, false, {
               fileName: "app/components/AuthForm.jsx",
-              lineNumber: 37,
+              lineNumber: 38,
               columnNumber: 15
             }, this)
           ] }, void 0, true, {
             fileName: "app/components/AuthForm.jsx",
-            lineNumber: 33,
+            lineNumber: 34,
             columnNumber: 24
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("label", { htmlFor: "email", className: "block mt-4", children: "Email" }, void 0, false, {
             fileName: "app/components/AuthForm.jsx",
-            lineNumber: 39,
+            lineNumber: 40,
             columnNumber: 11
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("input", { id: "email", type: "email", name: "mail", "aria-label": "email", placeholder: "Type your email...", required: true, autoComplete: "on", className: "border border-gray-300 rounded-md px-2 py-1 mt-1" }, void 0, false, {
             fileName: "app/components/AuthForm.jsx",
-            lineNumber: 42,
+            lineNumber: 43,
             columnNumber: 11
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("label", { htmlFor: "password", className: "block mt-4", children: "Password" }, void 0, false, {
             fileName: "app/components/AuthForm.jsx",
-            lineNumber: 44,
+            lineNumber: 45,
             columnNumber: 11
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("input", { id: "password", type: "password", name: "password", "aria-label": "password", placeholder: "Type your password...", autoComplete: "current-password", className: "border border-gray-300 rounded-md px-2 py-1 mt-1" }, void 0, false, {
             fileName: "app/components/AuthForm.jsx",
-            lineNumber: 47,
+            lineNumber: 48,
             columnNumber: 11
           }, this),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "btns mt-5", children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("button", { className: "bg-blue-600 text-white rounded-md py-1 w-full", children: isSignUp ? "Sign up" : "Sign in" }, void 0, false, {
+          /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "btns mt-5", children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Button, { className: "w-full", children: isSignUp ? "Sign up" : "Sign in" }, void 0, false, {
             fileName: "app/components/AuthForm.jsx",
-            lineNumber: 50,
+            lineNumber: 51,
             columnNumber: 13
           }, this) }, void 0, false, {
             fileName: "app/components/AuthForm.jsx",
-            lineNumber: 49,
+            lineNumber: 50,
             columnNumber: 11
           }, this),
           error && /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "error-message mt-4", children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("p", { style: {
@@ -109,11 +112,11 @@ var AuthForm = ({
             textAlign: "center"
           }, children: error }, void 0, false, {
             fileName: "app/components/AuthForm.jsx",
-            lineNumber: 56,
+            lineNumber: 57,
             columnNumber: 15
           }, this) }, void 0, false, {
             fileName: "app/components/AuthForm.jsx",
-            lineNumber: 55,
+            lineNumber: 56,
             columnNumber: 21
           }, this)
         ]
@@ -122,7 +125,7 @@ var AuthForm = ({
       true,
       {
         fileName: "app/components/AuthForm.jsx",
-        lineNumber: 31,
+        lineNumber: 32,
         columnNumber: 9
       },
       this
@@ -132,21 +135,21 @@ var AuthForm = ({
       " ",
       /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(NavLink, { to: isSignUp ? "/signin" : "/signup", className: "text-blue-600", children: isSignUp ? "Sign in here." : "Sign up here." }, void 0, false, {
         fileName: "app/components/AuthForm.jsx",
-        lineNumber: 68,
+        lineNumber: 69,
         columnNumber: 11
       }, this)
     ] }, void 0, true, {
       fileName: "app/components/AuthForm.jsx",
-      lineNumber: 66,
+      lineNumber: 67,
       columnNumber: 9
     }, this)
   ] }, void 0, true, {
     fileName: "app/components/AuthForm.jsx",
-    lineNumber: 27,
+    lineNumber: 28,
     columnNumber: 7
   }, this) }, void 0, false, {
     fileName: "app/components/AuthForm.jsx",
-    lineNumber: 26,
+    lineNumber: 27,
     columnNumber: 10
   }, this);
 };
@@ -161,4 +164,4 @@ export {
   require_session,
   AuthForm_default
 };
-//# sourceMappingURL=/build/_shared/chunk-2WQ6NMLI.js.map
+//# sourceMappingURL=/build/_shared/chunk-2ATWOBPH.js.map

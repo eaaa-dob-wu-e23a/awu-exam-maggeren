@@ -3,6 +3,7 @@ import { Form, useLoaderData } from "@remix-run/react";
 import mongoose from "mongoose";
 import EventCard from "../components/EventCard";
 import { authenticator } from "../services/auth.server";
+import Button from "../components/Button";
 
 export function meta({ data }) {
   return [
@@ -14,9 +15,7 @@ export function meta({ data }) {
 
 export async function loader({ request, params }) {
   // Ensure the user is authenticated
-  const authUser = await authenticator.isAuthenticated(request, {
-    failureRedirect: "/signin",
-  });
+  const authUser = await authenticator.isAuthenticated(request);
   // Load the post and the user who created it
   const event = await mongoose.models.Event.findById(params.eventId)
     .populate("creator")
@@ -27,7 +26,7 @@ export async function loader({ request, params }) {
 export async function action({ request, params }) {
   // Protect the route
   await authenticator.isAuthenticated(request, {
-    failureRedirect: "/signin",
+    failureRedirect: request.url,
   });
   // Delete the post
   await mongoose.models.Event.findByIdAndDelete(params.eventId);
@@ -44,23 +43,30 @@ export default function Post() {
     }
   }
   return (
-    <div id="post-page" className="page">
-      <EventCard event={event} />
-      {authUser._id !== event.creator._id &&
-        !event.attendees.some((attendee) => attendee._id === authUser._id) && (
-          <Form action="attend" method="post">
-            <button>Attend</button>
-          </Form>
-        )}
-      {authUser._id === event.creator._id && (
-        <div className="btns">
-          <Form action="update">
-            <button>Update</button>
-          </Form>
-          <Form action="destroy" method="post" onSubmit={confirmDelete}>
-            <button>Delete</button>
-          </Form>
-        </div>
+    <div id="post-page" className="page flex flex-col w-full items-center">
+      <EventCard event={event} className="w-3/4" />
+      {authUser && (
+        <>
+          {authUser._id !== event.creator._id &&
+            !event.attendees.some(
+              (attendee) => attendee._id === authUser._id
+            ) && (
+              <Form action="attend" method="post">
+                <button>Attend</button>
+              </Form>
+            )}
+
+          {authUser._id === event.creator._id && (
+            <div className="btns flex flex-row space-x-2 items-center">
+              <Form action="update">
+                <Button isDelete={false} children={"Update"} />
+              </Form>
+              <Form action="destroy" method="post" onSubmit={confirmDelete}>
+                <Button isDelete={true} children={"Delete"} />
+              </Form>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

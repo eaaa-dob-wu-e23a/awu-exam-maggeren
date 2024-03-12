@@ -1,6 +1,10 @@
 import {
+  Button
+} from "/build/_shared/chunk-55HWAWQI.js";
+import {
   EventCard
-} from "/build/_shared/chunk-J52M6XN7.js";
+} from "/build/_shared/chunk-DCMRXS4K.js";
+import "/build/_shared/chunk-PP67CQWQ.js";
 import {
   require_browser_umd
 } from "/build/_shared/chunk-GMSPC5K3.js";
@@ -50,7 +54,7 @@ if (import.meta) {
     //@ts-expect-error
     "app/routes/events.$eventId.jsx"
   );
-  import.meta.hot.lastModified = "1710097318922.9187";
+  import.meta.hot.lastModified = "1710265461050.1753";
 }
 function meta({
   data
@@ -71,48 +75,54 @@ function Post() {
       event2.preventDefault();
     }
   }
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { id: "post-page", className: "page", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(EventCard, { event }, void 0, false, {
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { id: "post-page", className: "page flex flex-col w-full items-center", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(EventCard, { event, className: "w-3/4" }, void 0, false, {
       fileName: "app/routes/events.$eventId.jsx",
-      lineNumber: 74,
+      lineNumber: 73,
       columnNumber: 7
     }, this),
-    authUser._id !== event.creator._id && !event.attendees.some((attendee) => attendee._id === authUser._id) && /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Form, { action: "attend", method: "post", children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("button", { children: "Attend" }, void 0, false, {
-      fileName: "app/routes/events.$eventId.jsx",
-      lineNumber: 76,
-      columnNumber: 13
-    }, this) }, void 0, false, {
-      fileName: "app/routes/events.$eventId.jsx",
-      lineNumber: 75,
-      columnNumber: 114
-    }, this),
-    authUser._id === event.creator._id && /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "btns", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Form, { action: "update", children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("button", { children: "Update" }, void 0, false, {
+    authUser && /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(import_jsx_dev_runtime.Fragment, { children: [
+      authUser._id !== event.creator._id && !event.attendees.some((attendee) => attendee._id === authUser._id) && /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Form, { action: "attend", method: "post", children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("button", { children: "Attend" }, void 0, false, {
         fileName: "app/routes/events.$eventId.jsx",
-        lineNumber: 80,
-        columnNumber: 13
+        lineNumber: 76,
+        columnNumber: 17
       }, this) }, void 0, false, {
+        fileName: "app/routes/events.$eventId.jsx",
+        lineNumber: 75,
+        columnNumber: 118
+      }, this),
+      authUser._id === event.creator._id && /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "btns flex flex-row space-x-2 items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Form, { action: "update", children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Button, { isDelete: false, children: "Update" }, void 0, false, {
+          fileName: "app/routes/events.$eventId.jsx",
+          lineNumber: 81,
+          columnNumber: 17
+        }, this) }, void 0, false, {
+          fileName: "app/routes/events.$eventId.jsx",
+          lineNumber: 80,
+          columnNumber: 15
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Form, { action: "destroy", method: "post", onSubmit: confirmDelete, children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Button, { isDelete: true, children: "Delete" }, void 0, false, {
+          fileName: "app/routes/events.$eventId.jsx",
+          lineNumber: 84,
+          columnNumber: 17
+        }, this) }, void 0, false, {
+          fileName: "app/routes/events.$eventId.jsx",
+          lineNumber: 83,
+          columnNumber: 15
+        }, this)
+      ] }, void 0, true, {
         fileName: "app/routes/events.$eventId.jsx",
         lineNumber: 79,
-        columnNumber: 11
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Form, { action: "destroy", method: "post", onSubmit: confirmDelete, children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("button", { children: "Delete" }, void 0, false, {
-        fileName: "app/routes/events.$eventId.jsx",
-        lineNumber: 83,
-        columnNumber: 13
-      }, this) }, void 0, false, {
-        fileName: "app/routes/events.$eventId.jsx",
-        lineNumber: 82,
-        columnNumber: 11
+        columnNumber: 50
       }, this)
     ] }, void 0, true, {
       fileName: "app/routes/events.$eventId.jsx",
-      lineNumber: 78,
-      columnNumber: 46
+      lineNumber: 74,
+      columnNumber: 20
     }, this)
   ] }, void 0, true, {
     fileName: "app/routes/events.$eventId.jsx",
-    lineNumber: 73,
+    lineNumber: 72,
     columnNumber: 10
   }, this);
 }
@@ -128,4 +138,4 @@ export {
   Post as default,
   meta
 };
-//# sourceMappingURL=/build/routes/events.$eventId-3DMXGUQ4.js.map
+//# sourceMappingURL=/build/routes/events.$eventId-ANBYXN6E.js.map

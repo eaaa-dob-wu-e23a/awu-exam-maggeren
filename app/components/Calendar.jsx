@@ -2,9 +2,9 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 
 class CalendarClass {
-  constructor() {
+  constructor(selectDate = null) {
     this.currentDate = new Date();
-    this.selectedDate = null;
+    this.selectedDate = selectDate ?? null;
   }
 
   getDaysInMonth(year, month) {
@@ -38,7 +38,7 @@ class CalendarClass {
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(year, month, day);
       const isSelected =
-        this.selectedDate &&
+        this.selectedDate != null &&
         this.selectedDate.toISOString().split("T")[0] ===
           date.toISOString().split("T")[0];
 
@@ -78,7 +78,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Calendar({ onDateClick }) {
+export default function Calendar({ onDateClick, selectedDate }) {
   const [calendar, setCalendar] = useState(new CalendarClass());
 
   const days = calendar.generateMonthMatrix(
@@ -88,7 +88,7 @@ export default function Calendar({ onDateClick }) {
 
   const handleNextMonth = () => {
     setCalendar((prevCalendar) => {
-      const newCalendar = new CalendarClass();
+      const newCalendar = new CalendarClass(selectedDate ?? null);
       newCalendar.currentDate = new Date(prevCalendar.currentDate);
       newCalendar.nextMonth();
       return newCalendar;

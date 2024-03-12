@@ -1,12 +1,8 @@
-import { authenticator } from "../services/auth.server";
-
+import { redirect } from "@remix-run/node";
 export const meta = () => {
-  return [{ title: "Remix Post App" }];
+  return [{ title: "FitMeet" }];
 };
 
 export async function loader({ request }) {
-  return await authenticator.isAuthenticated(request, {
-    successRedirect: "/events",
-    failureRedirect: "/signin",
-  });
+  return redirect("/events");
 }

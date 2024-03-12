@@ -1,9 +1,10 @@
 import { Form, NavLink } from "@remix-run/react";
+import Button from "./Button";
 const AuthForm = ({ error, isSignUp }) => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-4 text-center">
+        <h1 className="text-2xl font-bold mb-2 text-center">
           {isSignUp ? "Sign up" : "Sign in"}
         </h1>
         <Form
@@ -56,9 +57,9 @@ const AuthForm = ({ error, isSignUp }) => {
           />
 
           <div className="btns mt-5">
-            <button className="bg-blue-600 text-white rounded-md py-1 w-full">
+            <Button className="w-full">
               {isSignUp ? "Sign up" : "Sign in"}
-            </button>
+            </Button>
           </div>
 
           {error && (
