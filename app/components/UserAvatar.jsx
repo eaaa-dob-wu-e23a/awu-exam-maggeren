@@ -22,7 +22,7 @@ export default function UserAvatar({ user }) {
   );
 }
 
-export function avatarFromInitials(userName) {
+export function avatarFromInitials(userName, className) {
   const initials = userName
     .split(" ")
     .map((name) => name[0])
@@ -31,7 +31,9 @@ export function avatarFromInitials(userName) {
     <img
       src={`https://ui-avatars.com/api/?name=${initials}&size=256&background=6574cd&color=fff`}
       alt={userName}
-      className="inline-block h-10 w-10 rounded-full object-cover"
+      className={
+        className ?? "inline-block h-10 w-10 rounded-full object-cover"
+      }
     />
   );
 }
