@@ -28,7 +28,6 @@ export async function loader({ request }) {
 export default function SignIn() {
   // if i got an error it will come back with the loader dxata
   const loaderData = useLoaderData();
-
   console.log("error:", loaderData?.error);
   return AuthForm({
     error: loaderData?.error?.message,

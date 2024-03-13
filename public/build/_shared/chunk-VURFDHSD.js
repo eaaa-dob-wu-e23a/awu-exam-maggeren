@@ -27,7 +27,7 @@ if (import.meta) {
     //@ts-expect-error
     "app/components/Button.jsx"
   );
-  import.meta.hot.lastModified = "1710262128082.1804";
+  import.meta.hot.lastModified = "1710343359121.3606";
 }
 function Button({
   children,
@@ -36,15 +36,16 @@ function Button({
   type,
   action,
   method,
+  disabled = false,
   className = ""
 }) {
   const baseClass = "rounded-md text-sm font-semibold shadow-sm";
   const deleteClass = "bg-red-500 px-3 py-2 text-white hover:bg-red-400";
   const defaultClass = "bg-blue-500 hover:bg-blue-700 text-white px-4 py-2";
   const buttonClass = `${baseClass} ${isDelete ? deleteClass : defaultClass} ${className}`;
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("button", { onClick, className: buttonClass, type, action, method, children }, void 0, false, {
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("button", { onClick, className: buttonClass, type, action, method, disabled, children }, void 0, false, {
     fileName: "app/components/Button.jsx",
-    lineNumber: 34,
+    lineNumber: 35,
     columnNumber: 10
   }, this);
 }
@@ -57,4 +58,4 @@ window.$RefreshSig$ = prevRefreshSig;
 export {
   Button
 };
-//# sourceMappingURL=/build/_shared/chunk-55HWAWQI.js.map
+//# sourceMappingURL=/build/_shared/chunk-VURFDHSD.js.map

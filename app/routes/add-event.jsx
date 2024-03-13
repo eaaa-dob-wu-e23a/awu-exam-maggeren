@@ -1,13 +1,16 @@
 import { redirect } from "@remix-run/node";
-import { Form, useNavigate, json } from "@remix-run/react";
-import mongoose, { set } from "mongoose";
+import { Form, json, useActionData, useNavigation } from "@remix-run/react";
+import validateEvent from "../services/event-validation";
+import mongoose from "mongoose";
+import Button from "../components/Button";
 import { useState } from "react";
 import { useLoaderData } from "@remix-run/react";
 import { authenticator } from "../services/auth.server";
 import { uploadImage } from "../services/upload-handler.server";
+
 import Calendar from "../components/Calendar";
 export const meta = () => {
-  return [{ title: "Add new meetup" }];
+  return [{ title: "FitMeet - New meetup" }];
 };
 
 export async function loader({ request }) {
@@ -18,17 +21,19 @@ export async function loader({ request }) {
 }
 
 export default function AddEvent({ entry }) {
+  const actionData = useActionData();
+  const navigation = useNavigation();
+  const isSubmitting =
+    navigation.state === "submitting" || navigation.state === "loading";
+
+  const errors = actionData?.errors ?? null;
   const [image, setImage] = useState(entry?.image ? entry?.image : null);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [location, setLocation] = useState("");
+
+  const [selectedDate, setSelectedDate] = useState();
   const { user } = useLoaderData();
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
-  };
-
-  const handleLocationChange = (location) => {
-    setLocation(location);
   };
 
   function handleImageChange(event) {
@@ -60,35 +65,51 @@ export default function AddEvent({ entry }) {
             id="text-div"
             className="w-full flex flex-col justify-center ml-10 mr-10"
           >
-            <label className="block text-lg mb-2 text-gray-700 text-center">
-              Title
-            </label>
+            <div className="flex-row space-x-4">
+              <label className="inline text-lg mb-2 text-gray-700 text-start">
+                Title
+              </label>
+              {errors?.title && (
+                <p className="inline text-red-500 text-sm">{errors.title}</p>
+              )}
+            </div>
             <input
               id="title"
               type="text"
               name="title"
-              className="block w-full rounded-md border-0 bg-slate-100 py-1.5 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+              className="block w-full mb-4 rounded-md border-0 bg-slate-100 py-1.5 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
             />
-            <label
-              className="block text-lg mb-2 text-gray-700 text-center mt-2"
-              htmlFor="text"
-            >
-              Description
-            </label>
+
+            <div className="flex-row space-x-4">
+              <label className="inline text-lg mb-2 text-gray-700 text-start">
+                Description
+              </label>
+              {errors?.description && (
+                <p className="inline text-red-500 text-sm">
+                  {errors.description}
+                </p>
+              )}
+            </div>
+
             <textarea
               id="text"
               name="description"
               className="block w-full rounded-md border-0 bg-slate-100 py-1.5 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
             ></textarea>
 
-            <label className="block text-lg mb-2 text-gray-700 text-center mt-2">
-              Location
-            </label>
+            <div className="flex-row space-x-4">
+              <label className="inline text-lg mb-2 text-gray-700 text-start">
+                Location
+              </label>
+              {errors?.title && (
+                <p className="inline text-red-500 text-sm">{errors.location}</p>
+              )}
+            </div>
             <input
               id="location"
               type="adress"
               name="location"
-              className="block w-full rounded-md border-0 bg-slate-100 py-1.5 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+              className="block w-full pl-2 rounded-md border-0 bg-slate-100 py-1.5 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
             />
           </div>
           <div id="image-div" className="w-full flex justify-center mt-10">
@@ -99,26 +120,35 @@ export default function AddEvent({ entry }) {
               type="file"
               onChange={handleImageChange}
             />
-            <img
-              id="image-preview"
-              className="cursor-pointer w-72 h-60 object-cover rounded-lg"
-              src={
-                image
-                  ? image
-                  : "https://placehold.co/600x400/F1F5F9/000000?text=Upload+an+image"
-              }
-              alt="Choose"
-              onError={(e) =>
-                (e.target.src =
-                  "https://placehold.co/600x400?text=Error+loading+image")
-              }
-              onClick={() => document.getElementById("file_input").click()}
-            />
+            <div className="flex flex-col items-center">
+              <img
+                id="image-preview"
+                className="cursor-pointer w-72 h-60 object-cover rounded-lg"
+                src={
+                  image
+                    ? image
+                    : "https://placehold.co/600x400/F1F5F9/000000?text=Upload+an+image"
+                }
+                alt="Choose"
+                onError={(e) =>
+                  (e.target.src =
+                    "https://placehold.co/600x400?text=Error+loading+image")
+                }
+                onClick={() => document.getElementById("file_input").click()}
+              />
+              {errors?.image && (
+                <p className="text-red-500 text-sm">{errors.image}</p>
+              )}
+            </div>
           </div>
         </div>
         <input name="creator" type="hidden" value={user._id ?? ""} />
         <div className="mt-6 flex items-center">
           <Calendar className="ml-20 w-full" onDateClick={handleDateClick} />
+          {errors?.date && (
+            <p className="text-red-500 text-sm ml-2">{errors.date}</p>
+          )}
+
           <input name="date" type="hidden" value={selectedDate ?? ""} />
 
           <div className="ml-8 flex flex-col items-center w-full">
@@ -133,64 +163,57 @@ export default function AddEvent({ entry }) {
               id="time"
               type="time"
               name="time"
-              defaultValue="00:00"
               className="p-3 border border-gray-300 rounded"
             />
+            {errors?.time && (
+              <p className="text-red-500 text-sm">{errors.time}</p>
+            )}
           </div>
         </div>
 
         <div className="flex justify-center">
-          <button
+          <Button
             type="submit"
             className="mt-6  p-3 bg-blue-500 text-white rounded cursor-pointer text-center"
+            disabled={isSubmitting}
           >
             Create Meetup
-          </button>
+          </Button>
         </div>
       </Form>
     </>
   );
 }
-//AIzaSyDxB8JlcODiXcIEfBxtAZNYcp3Sj-3ce4o
 export async function action({ request }) {
-  //get form data from request
+  //make sure user is authenticated
+  await authenticator.isAuthenticated(request, {
+    failureRedirect: "/events",
+  });
   const formData = await request.formData();
+  const image = formData.get("image");
+  const errors = validateEvent({ formData });
 
-  const { time, date, image, title, description, creator, location } =
-    Object.fromEntries(formData);
-
-  // Check for the presence and types of the text fields
-  if (
-    typeof date !== "string" ||
-    typeof title !== "string" ||
-    typeof description !== "string" ||
-    typeof time !== "string" ||
-    !image // Directly check for file presence, no need to check type
-  ) {
-    throw new Error("Bad request");
+  if (errors && Object.keys(errors).length > 0) {
+    return json({ errors });
+  }
+  let imageUrl = "";
+  if (formData.get("image") && image.size > 0) {
+    imageUrl = await uploadImage(image);
   }
 
-  // Assuming imageFile is a File object now, we can properly work with it
-  if (image instanceof File) {
-    // Ensure imageFile is handled as a File
-    const imageUrl = await uploadImage(image);
+  const event = await new mongoose.models.Event({
+    date: formData.get("date"),
+    title: formData.get("title"),
+    image: imageUrl,
+    description: formData.get("description"),
+    location: formData.get("location"),
+    creator: formData.get("creator"),
+  });
 
-    const event = new mongoose.models.Event({
-      date: date,
-      title,
-      image: imageUrl,
-      description,
-      location,
-      creator,
-    });
-
-    const isSaved = await event.save();
-    if (isSaved) {
-      return redirect("/events");
-    } else {
-      throw new Error("Failed to save event");
-    }
+  const isSaved = await event.save();
+  if (isSaved) {
+    return redirect("/events");
   } else {
-    throw new Error("Image file is missing or invalid");
+    throw new Error("Failed to save event");
   }
 }

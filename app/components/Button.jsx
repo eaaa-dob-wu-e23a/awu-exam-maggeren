@@ -5,6 +5,7 @@ export default function Button({
   type,
   action,
   method,
+  disabled = false,
   className = "",
 }) {
   const baseClass = "rounded-md text-sm font-semibold shadow-sm";
@@ -22,6 +23,7 @@ export default function Button({
       type={type}
       action={action}
       method={method}
+      disabled={disabled}
     >
       {children}
     </button>

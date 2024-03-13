@@ -1,6 +1,9 @@
-import { Form, NavLink } from "@remix-run/react";
+import { Form, NavLink, useNavigation } from "@remix-run/react";
 import Button from "./Button";
 const AuthForm = ({ error, isSignUp }) => {
+  const navigation = useNavigation();
+  const isSubmitting =
+    navigation.state === "submitting" || navigation.state === "loading";
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="w-full max-w-md">
@@ -57,7 +60,7 @@ const AuthForm = ({ error, isSignUp }) => {
           />
 
           <div className="btns mt-5">
-            <Button className="w-full">
+            <Button className="w-full" disabled={isSubmitting}>
               {isSignUp ? "Sign up" : "Sign in"}
             </Button>
           </div>

@@ -3,10 +3,9 @@ import { Form, Link, useLoaderData, useSubmit } from "@remix-run/react";
 import mongoose from "mongoose";
 import EventCard from "../components/EventCard";
 import { authenticator } from "../services/auth.server";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 export const meta = () => {
-  return [{ title: "Meetups" }];
+  return [{ title: "FitMeet - Meetups" }];
 };
 
 export async function loader({ request }) {
@@ -56,14 +55,14 @@ export default function Index() {
         role="search"
         onChange={handleSearchFilterAndSort}
       >
-        <div className="flex flex-col md:flex-row items-start justify-center space-y-4 md:space-y-0 md:space-x-4">
+        <div className="flex flex-col md:flex-row items-start justify-center space-y-4 md:space-y-0">
           <div className="mb-14 flex flex-row space-x-3">
             <div className="flex-col">
               <label className="block text-sm font-medium text-gray-600 mb-1">
                 Search
               </label>
               <input
-                className="border border-gray-300 text-center rounded-md h-auto align-top"
+                className="border border-gray-300 text-center rounded-md h-10 align-top"
                 aria-label="Search by caption"
                 defaultValue={""}
                 placeholder="Search"
@@ -71,7 +70,7 @@ export default function Index() {
                 name="q"
               />
             </div>
-            <div className="mb-4 h-10 text-left">
+            <div className="h-10 text-left">
               <label className="block text-sm text-center font-medium text-gray-600 mb-1">
                 Sort By
               </label>
@@ -90,7 +89,12 @@ export default function Index() {
       </Form>
       <section className="grid gap-4 md:grid-cols-1 lg:grid-cols-2 mt-2 mr-4 ml-4">
         {events.map((event) => (
-          <Link key={event._id} className="event-link" to={`${event._id}`}>
+          <Link
+            id={event._id}
+            key={event._id}
+            className="event-link"
+            to={`/events/${event._id}`}
+          >
             <EventCard event={event} />
           </Link>
         ))}

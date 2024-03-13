@@ -34,7 +34,7 @@ var require_auth = __commonJS({
 });
 
 // app/tailwind.css
-var tailwind_default = "/build/_assets/tailwind-NKT7Y6IQ.css";
+var tailwind_default = "/build/_assets/tailwind-QN5NHYAJ.css";
 
 // app/components/Nav.jsx
 var import_jsx_dev_runtime = __toESM(require_jsx_dev_runtime(), 1);
@@ -287,4 +287,4 @@ export {
   App as default,
   links
 };
-//# sourceMappingURL=/build/root-NRYEJW2D.js.map
+//# sourceMappingURL=/build/root-NFWVYUIO.js.map
