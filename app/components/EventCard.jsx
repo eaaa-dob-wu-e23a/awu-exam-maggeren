@@ -1,5 +1,8 @@
 import UserAvatar from "./UserAvatar";
 import React from "react";
+import { useLocation } from "@remix-run/react";
+import AttendeesList from "./AttendeesList";
+import { avatarFromInitials } from "../components/UserAvatar";
 import {
   MapPinIcon,
   CalendarIcon,
@@ -10,7 +13,7 @@ export default function EventCard({ event, className }) {
   const date = new Date(event.date);
   const attendeesExist = event.attendees?.length > 0;
   const locationExists = event.location;
-
+  let location = useLocation();
   return (
     <>
       <div
@@ -61,22 +64,27 @@ export default function EventCard({ event, className }) {
         <p className="text-gray-600 overflow-hidden whitespace-nowrap overflow-ellipsis mb-4">
           {event.description}
         </p>
+
         <div className="mt-2 flex flex-row">
-          {attendeesExist && (
+          {attendeesExist && location.pathname === "/events" && (
             <div className="flex items-start">
               <p className="text-lg font-bold mr-2 mt-1">Attendees</p>
               <div className="flex -space-x-2 overflow-hidden">
                 {event.attendees
                   ? event.attendees
                       .slice(0, 5)
-                      .map((attendee, index) => (
-                        <img
-                          key={index}
-                          className="inline-block h-10 w-10 rounded-full object-cover"
-                          src={attendee.avatar}
-                          alt=""
-                        />
-                      ))
+                      .map((attendee, index) =>
+                        attendee.avatar ? (
+                          <img
+                            key={index}
+                            className="inline-block h-10 w-10 rounded-full object-cover"
+                            src={attendee.avatar}
+                            alt=""
+                          />
+                        ) : (
+                          avatarFromInitials(attendee.name)
+                        )
+                      )
                   : null}
               </div>
             </div>
@@ -85,6 +93,9 @@ export default function EventCard({ event, className }) {
             <div className="flex flex-col items-start justify-center">
               <p className="text-lg font-bold mt-2">No attendees yet</p>
             </div>
+          )}
+          {attendeesExist && location.pathname.includes("/events/") && (
+            <AttendeesList attendees={event.attendees} />
           )}
           {locationExists && (
             <p className="text-lg font-bold ml-auto flex items-end">

@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 import EventCard from "../components/EventCard";
 import { authenticator } from "../services/auth.server";
 import Button from "../components/Button";
-import AttendeesList from "../components/AttendeesList";
 
 export function meta({ data }) {
   return [
@@ -24,16 +23,6 @@ export async function loader({ request, params }) {
   return json({ event, authUser });
 }
 
-export async function action({ request, params }) {
-  // Protect the route
-  await authenticator.isAuthenticated(request, {
-    failureRedirect: request.url,
-  });
-  // Delete the post
-  await mongoose.models.Event.findByIdAndDelete(params.eventId);
-  return redirect("/events");
-}
-
 export default function Post() {
   const { event, authUser } = useLoaderData();
 
@@ -46,7 +35,6 @@ export default function Post() {
   return (
     <div id="post-page" className="page flex flex-col w-full items-center">
       <EventCard event={event} className="w-3/4" />
-      <AttendeesList attendees={event.attendees} />
       {authUser && (
         <>
           {authUser._id !== event.creator._id &&

@@ -22,7 +22,7 @@ export default function UserAvatar({ user }) {
   );
 }
 
-export function avatarFromInitials(userName, height, width) {
+export function avatarFromInitials(userName) {
   const initials = userName
     .split(" ")
     .map((name) => name[0])
