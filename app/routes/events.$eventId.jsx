@@ -20,12 +20,22 @@ export async function loader({ request, params }) {
   const event = await mongoose.models.Event.findById(params.eventId)
     .populate("creator")
     .populate("attendees");
-  return json({ event, authUser });
+
+  const relatedEvents = await mongoose.models.Event.find({
+    $or: [
+      { creator: event.creator._id }, // Events where the creator is attending
+      { attendees: { $in: event.attendees } }, // Events where attendees are attending
+    ],
+  })
+    .populate("creator")
+    .populate("attendees");
+
+  return json({ event, authUser, relatedEvents });
 }
 
 export default function Post() {
-  const { event, authUser } = useLoaderData();
-
+  const { event, authUser, relatedEvents } = useLoaderData();
+  console.log("related ", relatedEvents);
   function confirmDelete(event) {
     const response = confirm("Please confirm you want to delete this event.");
     if (!response) {
@@ -57,6 +67,18 @@ export default function Post() {
             </div>
           )}
         </>
+      )}
+      {/* Related events */}
+
+      {relatedEvents && relatedEvents.length > 0 && (
+        <div className="flex-row mt-20">
+          <h2 className="text-xl text-center font-bold mb-4">Related events</h2>
+          <div className="flex overflow-x-scroll pb-10 hide-scroll-bar max-w-full">
+            {relatedEvents.map((event) => (
+              <EventCard key={event._id} event={event} />
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );

@@ -3,7 +3,7 @@ import { Form, json, useActionData, useNavigation } from "@remix-run/react";
 import validateEvent from "../services/event-validation";
 import mongoose from "mongoose";
 import Button from "../components/Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLoaderData } from "@remix-run/react";
 import { authenticator } from "../services/auth.server";
 import { uploadImage } from "../services/upload-handler.server";
@@ -22,9 +22,13 @@ export async function loader({ request }) {
 
 export default function AddEvent({ entry }) {
   const actionData = useActionData();
-  const navigation = useNavigation();
-  const isSubmitting =
-    navigation.state === "submitting" || navigation.state === "loading";
+  let navigation = useNavigation();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  useEffect(() => {
+    setIsSubmitting(
+      navigation.state === "submitting" || navigation.state === "loading"
+    );
+  }, [navigation.state]);
 
   const errors = actionData?.errors ?? null;
   const [image, setImage] = useState(entry?.image ? entry?.image : null);
@@ -77,7 +81,7 @@ export default function AddEvent({ entry }) {
               id="title"
               type="text"
               name="title"
-              className="block w-full mb-4 rounded-md border-0 bg-slate-100 py-1.5 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+              className="block w-full mb-4 pl-2 rounded-md border-0 bg-slate-100 py-1.5 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
             />
 
             <div className="flex-row space-x-4">
@@ -94,7 +98,7 @@ export default function AddEvent({ entry }) {
             <textarea
               id="text"
               name="description"
-              className="block w-full rounded-md border-0 bg-slate-100 py-1.5 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+              className="block w-full rounded-md pl-2 border-0 bg-slate-100 py-1.5 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
             ></textarea>
 
             <div className="flex-row space-x-4">
@@ -177,7 +181,7 @@ export default function AddEvent({ entry }) {
             className="mt-6  p-3 bg-blue-500 text-white rounded cursor-pointer text-center"
             disabled={isSubmitting}
           >
-            Create Meetup
+            {isSubmitting ? "Creating..." : "Create Meetup"}
           </Button>
         </div>
       </Form>
