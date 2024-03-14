@@ -22,9 +22,14 @@ export async function loader({ request, params }) {
     .populate("attendees");
 
   const relatedEvents = await mongoose.models.Event.find({
-    $or: [
-      { creator: event.creator._id }, // Events where the creator is attending
-      { attendees: { $in: event.attendees } }, // Events where attendees are attending
+    $and: [
+      { _id: { $ne: event._id } }, // Exclude the current event
+      {
+        $or: [
+          { creator: event.creator._id }, // Events where the creator is attending
+          { attendees: { $in: event.attendees } }, // Events where attendees are attending
+        ],
+      },
     ],
   })
     .populate("creator")
