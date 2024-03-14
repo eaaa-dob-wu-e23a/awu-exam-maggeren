@@ -1,14 +1,18 @@
 import UserAvatar from "./UserAvatar";
-import React from "react";
 import { useLocation, Form, Link } from "@remix-run/react";
 import AttendeesList from "./AttendeesList";
 import { avatarFromInitials } from "../components/UserAvatar";
 import Button from "./Button";
-import {
-  MapPinIcon,
-  CalendarIcon,
-  ClockIcon,
-} from "@heroicons/react/24/outline";
+import React from "react";
+const MapPinIcon = React.lazy(() =>
+  import("@heroicons/react/24/outline/MapPinIcon")
+);
+const CalendarIcon = React.lazy(() =>
+  import("@heroicons/react/24/outline/CalendarIcon")
+);
+const ClockIcon = React.lazy(() =>
+  import("@heroicons/react/24/outline/ClockIcon")
+);
 
 export default function EventCard({
   event,
