@@ -71,11 +71,11 @@ export default function Post() {
       {/* Related events */}
 
       {relatedEvents && relatedEvents.length > 0 && (
-        <div className="flex-row mt-20">
+        <div className="flex-row mt-20 w-3/4">
           <h2 className="text-xl text-center font-bold mb-4">Related events</h2>
-          <div className="flex overflow-x-scroll pb-10 hide-scroll-bar max-w-full">
+          <div className="flex overflow-x-scroll pb-10 hide-scroll-bar space-x-4 justify-center">
             {relatedEvents.map((event) => (
-              <EventCard key={event._id} event={event} />
+              <EventCard key={event._id} event={event} className={"w-96"} />
             ))}
           </div>
         </div>

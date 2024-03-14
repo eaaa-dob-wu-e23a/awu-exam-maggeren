@@ -30,7 +30,7 @@ export default function EventCard({ event, className, isAttending }) {
                   : "https://placehold.co/600x400?text=FitMeet"
               }
               alt={event.title}
-              className="w-full h-48 object-cover rounded-md"
+              className="w-full h-64 object-cover rounded-md"
             />
           </Link>
           {/* Display the date on the event picture with a background */}

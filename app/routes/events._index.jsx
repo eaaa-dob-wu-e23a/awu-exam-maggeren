@@ -7,40 +7,58 @@ import { authenticator } from "../services/auth.server";
 export const meta = () => {
   return [{ title: "FitMeet - Meetups" }];
 };
-
 export async function loader({ request }) {
-  const user = await authenticator.isAuthenticated(request);
-
   const url = new URL(request.url);
   const q = url.searchParams.get("q") || "";
   const sortBy = url.searchParams.get("sort-by") || "createdAt";
-  const filterTag = url.searchParams.get("tag") || "";
+  const orOptions = [
+    { title: { $regex: q, $options: "i" } },
+    { location: { $regex: q, $options: "i" } },
+  ];
 
-  // Assuming you want to sort in ascending order.
-  // If you need descending order for some fields, you might need to adjust the logic accordingly.
   const sortOption = {};
-  sortOption[sortBy] = -1; // Use -1 here if you want to sort in descending order by default
-  const query = {
-    $or: [
-      { title: { $regex: q, $options: "i" } },
-      { location: { $regex: q, $options: "i" } },
-    ],
-  };
-  const events = await mongoose.models.Event.find(query)
-    .sort(sortOption)
-    .populate("creator")
-    .populate("attendees");
+  sortOption[sortBy] = sortBy === "date" ? 1 : -1;
 
-  return json({ events, q, sortBy, filterTag });
+  let events;
+  if (sortBy === "attendees") {
+    events = await mongoose.models.Event.aggregate([
+      {
+        $match: {
+          $or: orOptions,
+        },
+      },
+      {
+        $addFields: {
+          attendeesCount: { $size: "$attendees" },
+        },
+      },
+      {
+        $sort: { attendeesCount: sortOption[sortBy] },
+      },
+      {
+        $limit: 100,
+      },
+    ]);
+    events = await mongoose.models.Event.populate(events, {
+      path: "attendees",
+    });
+  } else {
+    events = await mongoose.models.Event.find({
+      $or: orOptions,
+    })
+      .sort(sortOption)
+      .populate("creator")
+      .populate("attendees")
+      .limit(100);
+  }
+  return json({ events, q, sortBy });
 }
 
 export default function Index() {
-  const { events, q, sortBy, filterTag } = useLoaderData();
-  console.log("events:", events);
+  const { events, q } = useLoaderData();
   const submit = useSubmit();
 
   function handleSearchFilterAndSort(event) {
-    console.log("event:", event);
     const isFirstSearch = q === null;
     submit(event.currentTarget, {
       replace: !isFirstSearch,
@@ -80,8 +98,8 @@ export default function Index() {
                 defaultValue={"Newest"}
               >
                 <option value="createdAt">Newest</option>
-                <option value="time">Expiration</option>
-                <option value="attendee">Attendees</option>
+                <option value="date">Expiration</option>
+                <option value="attendees">Attendees</option>
               </select>
             </div>
           </div>
