@@ -82,7 +82,9 @@ export default function EventCard({ event, className }) {
                             alt=""
                           />
                         ) : (
-                          avatarFromInitials(attendee.name)
+                          <div key={index}>
+                            {avatarFromInitials(attendee.name)}
+                          </div>
                         )
                       )
                   : null}
