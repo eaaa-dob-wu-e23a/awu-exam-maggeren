@@ -89,14 +89,7 @@ export default function Index() {
       </Form>
       <section className="grid gap-4 md:grid-cols-1 lg:grid-cols-2 mt-2 mr-4 ml-4">
         {events.map((event) => (
-          <Link
-            id={event._id}
-            key={event._id}
-            className="event-link"
-            to={`/events/${event._id}`}
-          >
-            <EventCard event={event} />
-          </Link>
+          <EventCard event={event} />
         ))}
       </section>
     </div>

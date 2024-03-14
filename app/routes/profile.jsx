@@ -145,13 +145,7 @@ export default function Profile() {
               Events Created
             </h2>
             {createdEvents.map((event) => (
-              <Link
-                key={event._id}
-                className="event-link"
-                to={`/events/${event._id}`}
-              >
-                <EventCard event={event} />
-              </Link>
+              <EventCard event={event} />
             ))}
           </div>
           <div className="flex-1 pl-4">
@@ -160,20 +154,7 @@ export default function Profile() {
             </h2>
             {attendingEvents.map((event) => (
               <div key={event._id} className="flex-row items-center mr-4">
-                <Link className="event-link" to={`/events/${event._id}`}>
-                  <EventCard event={event} />
-                </Link>
-                {/* Display leave event if on profile page*/}
-
-                <Form
-                  action={`${event._id}/leave-event`}
-                  className="text-center"
-                  method="post"
-                >
-                  <Button isDelete={true} className=" ">
-                    Leave
-                  </Button>
-                </Form>
+                <EventCard event={event} isAttending={true} />
               </div>
             ))}
           </div>
