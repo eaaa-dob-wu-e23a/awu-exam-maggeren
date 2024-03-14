@@ -1,8 +1,9 @@
 import UserAvatar from "./UserAvatar";
 import React from "react";
-import { useLocation } from "@remix-run/react";
+import { useLocation, Form } from "@remix-run/react";
 import AttendeesList from "./AttendeesList";
 import { avatarFromInitials } from "../components/UserAvatar";
+import Button from "./Button";
 import {
   MapPinIcon,
   CalendarIcon,
@@ -66,31 +67,33 @@ export default function EventCard({ event, className }) {
         </p>
 
         <div className="mt-2 flex flex-row">
-          {attendeesExist && location.pathname === "/events" && (
-            <div className="flex items-start">
-              <p className="text-lg font-bold mr-2 mt-1">Attendees</p>
-              <div className="flex -space-x-2 overflow-hidden">
-                {event.attendees
-                  ? event.attendees
-                      .slice(0, 5)
-                      .map((attendee, index) =>
-                        attendee.avatar ? (
-                          <img
-                            key={index}
-                            className="inline-block h-10 w-10 rounded-full object-cover"
-                            src={attendee.avatar}
-                            alt=""
-                          />
-                        ) : (
-                          <div key={index}>
-                            {avatarFromInitials(attendee.name)}
-                          </div>
+          {attendeesExist &&
+            (location.pathname === "/events" ||
+              location.pathname === "/profile") && (
+              <div className="flex items-start">
+                <p className="text-lg font-bold mr-2 mt-1">Attendees</p>
+                <div className="flex -space-x-2 overflow-hidden">
+                  {event.attendees
+                    ? event.attendees
+                        .slice(0, 5)
+                        .map((attendee, index) =>
+                          attendee.avatar ? (
+                            <img
+                              key={index}
+                              className="inline-block h-10 w-10 rounded-full object-cover"
+                              src={attendee.avatar}
+                              alt=""
+                            />
+                          ) : (
+                            <div key={index}>
+                              {avatarFromInitials(attendee.name)}
+                            </div>
+                          )
                         )
-                      )
-                  : null}
+                    : null}
+                </div>
               </div>
-            </div>
-          )}
+            )}
           {!attendeesExist && (
             <div className="flex flex-col items-start justify-center">
               <p className="text-lg font-bold mt-2">No attendees yet</p>

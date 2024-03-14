@@ -21,6 +21,7 @@ export default function UserAvatar({ user }) {
 }
 
 export function avatarFromInitials(userName, className) {
+  if (!userName) return null;
   const initials = userName
     .split(" ")
     .map((name) => name[0])

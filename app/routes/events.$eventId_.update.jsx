@@ -6,12 +6,12 @@ import {
   useActionData,
 } from "@remix-run/react";
 import mongoose from "mongoose";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { authenticator } from "../services/auth.server";
 import Calendar from "../components/Calendar";
 import Button from "../components/Button";
 import validateEvent from "../services/event-validation";
-import { uploadImage } from "../services/upload-handler.server";
+import { uploadImage, deleteImage } from "../services/upload-handler.server";
 export function meta() {
   return [
     {
@@ -37,11 +37,15 @@ export async function loader({ request, params }) {
 
 export default function updateEvent() {
   const actionData = useActionData();
-  const navigation = useNavigation();
-  const { event, user } = useLoaderData();
 
-  const isSubmitting =
-    navigation.state === "submitting" || navigation.state === "loading";
+  const { event, user } = useLoaderData();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  let navigation = useNavigation();
+  useEffect(() => {
+    setIsSubmitting(
+      navigation.state === "submitting" || navigation.state === "loading"
+    );
+  }, [navigation.state]);
 
   // Get hours and minutes from the Date object
   const eventDate = new Date(event.date);
@@ -208,7 +212,7 @@ export default function updateEvent() {
             className="mt-6  p-3 bg-blue-500 text-white rounded cursor-pointer text-center"
             disabled={isSubmitting}
           >
-            Update Meetup
+            {isSubmitting ? "Updating..." : "Update"}
           </Button>
         </div>
       </Form>
@@ -216,7 +220,6 @@ export default function updateEvent() {
   );
 }
 export async function action({ request, params }) {
-  console.log("params:", params.eventId);
   // Protect the route
   const authUser = await authenticator.isAuthenticated(request, {
     failureRedirect: request.url,
@@ -240,9 +243,12 @@ export async function action({ request, params }) {
 
   // Check if the image has been changed
   if (image && image.size > 0 && image.name !== eventToUpdate.image) {
+    // Delete the old image
+    await deleteImage(eventToUpdate.image);
     imageUrl = await uploadImage(image);
   } else {
     // Use the existing image URL
+    console.log("Using existing image");
     imageUrl = eventToUpdate.image;
   }
 

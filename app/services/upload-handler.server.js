@@ -20,3 +20,14 @@ export async function uploadImage(imageFile) {
 
   return imageUrl;
 }
+
+export async function deleteImage(imageUrl) {
+  const response = await fetch(imageUrl, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Image deletion failed");
+  }
+  return true;
+}
