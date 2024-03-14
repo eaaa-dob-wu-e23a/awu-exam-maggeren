@@ -24,12 +24,7 @@ export async function loader({ request, params }) {
   const relatedEvents = await mongoose.models.Event.find({
     $and: [
       { _id: { $ne: event._id } }, // Exclude the current event
-      {
-        $or: [
-          { creator: event.creator._id }, // Events where the creator is attending
-          { attendees: { $in: event.attendees } }, // Events where attendees are attending
-        ],
-      },
+      { attendees: { $in: event.attendees, $ne: authUser._id } },
     ],
   })
     .populate("creator")
@@ -37,7 +32,6 @@ export async function loader({ request, params }) {
 
   return json({ event, authUser, relatedEvents });
 }
-
 export default function Post() {
   const { event, authUser, relatedEvents } = useLoaderData();
   console.log("related ", relatedEvents);
@@ -80,7 +74,11 @@ export default function Post() {
           <h2 className="text-xl text-center font-bold mb-4">Related events</h2>
           <div className="flex overflow-x-scroll pb-10 hide-scroll-bar space-x-4 justify-center">
             {relatedEvents.map((event) => (
-              <EventCard key={event._id} event={event} className={"w-96"} />
+              <EventCard
+                key={event._id}
+                event={event}
+                className={"min-w-96 max-w-96"}
+              />
             ))}
           </div>
         </div>
