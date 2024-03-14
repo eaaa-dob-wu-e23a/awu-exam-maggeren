@@ -139,7 +139,7 @@ export default function Profile() {
             </div>
           </div>
         </div>
-        <div className="flex">
+        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2 mt-2 mr-4 ml-4">
           <div className="flex-1 pr-4">
             <h2 className="text-2xl font-bold text-black text-center mt-4">
               Events Created
@@ -154,12 +154,12 @@ export default function Profile() {
               </Link>
             ))}
           </div>
-          <div className="flex-1 pl-4 border-l-2">
+          <div className="flex-1 pl-4">
             <h2 className="text-2xl font-bold text-black text-center mt-4">
               Events Attending
             </h2>
             {attendingEvents.map((event) => (
-              <div key={event._id} className="flex-row items-center">
+              <div key={event._id} className="flex-row items-center mr-4">
                 <Link className="event-link" to={`/events/${event._id}`}>
                   <EventCard event={event} />
                 </Link>

@@ -225,7 +225,7 @@ export async function action({ request, params }) {
     failureRedirect: request.url,
   });
 
-  // Fetch the post to check if the current user is the creator
+  // Fetch the event to check if the current user is the creator
   const eventToUpdate = await mongoose.models.Event.findById(params.eventId);
   if (eventToUpdate.creator._id.toString() !== authUser._id.toString()) {
     // User is not the creator of the event, redirect

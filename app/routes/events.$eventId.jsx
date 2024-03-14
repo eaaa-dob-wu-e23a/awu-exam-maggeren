@@ -27,13 +27,13 @@ export default function Post() {
   const { event, authUser } = useLoaderData();
 
   function confirmDelete(event) {
-    const response = confirm("Please confirm you want to delete this post.");
+    const response = confirm("Please confirm you want to delete this event.");
     if (!response) {
       event.preventDefault();
     }
   }
   return (
-    <div id="post-page" className="page flex flex-col w-full items-center">
+    <div id="event-page" className="page flex flex-col w-full items-center">
       <EventCard event={event} className="w-3/4" />
       {authUser && (
         <>
