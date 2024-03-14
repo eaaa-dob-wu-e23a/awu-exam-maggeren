@@ -140,24 +140,28 @@ export default function Profile() {
           </div>
         </div>
         <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2 mt-2 mr-4 ml-4">
-          <div className="flex-1 pr-4">
-            <h2 className="text-2xl font-bold text-black text-center mt-4">
-              Events Created
-            </h2>
-            {createdEvents.map((event) => (
-              <EventCard event={event} />
-            ))}
-          </div>
-          <div className="flex-1 pl-4">
-            <h2 className="text-2xl font-bold text-black text-center mt-4">
-              Events Attending
-            </h2>
-            {attendingEvents.map((event) => (
-              <div key={event._id} className="flex-row items-center mr-4">
-                <EventCard event={event} isAttending={true} />
-              </div>
-            ))}
-          </div>
+          {createdEvents.length > 0 && (
+            <div className="flex-1 pr-4">
+              <h2 className="text-2xl font-bold text-black text-center mt-4">
+                Events Created
+              </h2>
+              {createdEvents.map((event) => (
+                <EventCard event={event} />
+              ))}
+            </div>
+          )}
+          {attendingEvents.length > 0 && (
+            <div className="flex-1 pl-4">
+              <h2 className="text-2xl font-bold text-black text-center mt-4">
+                Events Attending
+              </h2>
+              {attendingEvents.map((event) => (
+                <div key={event._id} className="flex-row items-center mr-4">
+                  <EventCard event={event} isAttending={true} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </main>
     </>

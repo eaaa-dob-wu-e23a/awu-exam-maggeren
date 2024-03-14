@@ -44,7 +44,7 @@ export default function Post() {
   }
   return (
     <div id="event-page" className="page flex flex-col w-full items-center">
-      <EventCard event={event} className="w-3/4" />
+      <EventCard event={event} className="w-3/4" hasDetails={true} />
       {authUser && (
         <>
           {authUser._id !== event.creator._id &&
