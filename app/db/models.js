@@ -214,7 +214,7 @@ async function insertData() {
     password: "1234",
   });
 
-  // Insert posts
+  // Insert events
   const event1 = await Event.create({
     title: "Running in the forest",
     description: "We are going to run in the forest",
@@ -230,32 +230,30 @@ async function insertData() {
     title: "Football",
     image:
       "https://images.expertreviews.co.uk/wp-content/uploads/2023/09/best-football-lead-scaled.jpg?width=626&height=352&fit=crop&format=webply",
-    description: "We are going to play football",
+    description: "We are going to play football in the local school",
     date: new Date("2024-06-01:19:30:00"),
     location: "Faarup skole",
     creator: rasmus._id,
-    attendees: [maria._id, anne._id],
+    attendees: [maria._id, anne._id,dan._id],
   });
 
   const event3 = await Event.create({
-    title: "Swimming",
+    title: "Swimming in the Hørring swimming hall",
     image:
-      "https://cdn.britannica.com/95/136995-050-6209F94F/rainforest-Malaysia.jpg",
-    description: "We are going to swim",
+      "https://www.health.com/thmb/Yv4HuoQyNbHNNxgtOTm63zqxurQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Health-Swimming-080c78802f384a4687df5a3b13d5611e-3719a8e40a3c4c43a63a4d795e47c505.jpg",
+    description: "We are going to swim in the swimming hall in Hjørring",
     date: new Date("2024-06-01:18:00:00"),
-    time: "18:00",
     location: "Hjørring svømmehal",
     creator: anne._id,
-    attendees: [maria._id, rasmus._id],
+    attendees: [maria._id, rasmus._id,line.id,dan._id],
   });
   const event4 = await Event.create({
-    title: "Running in the forest",
-    description: "We are going to run in the forest",
+    title: "Fitness in the city",
+    description: "We are going to do fitness in the urban city",
     image:
-      "https://cdn.britannica.com/95/136995-050-6209F94F/rainforest-Malaysia.jpg",
+      "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/ikif7fDchRjY/v0/-1x-1.jpg",
     date: new Date("2024-06-01:22:30:00"),
-    time: "20:00",
-    location: "Bøge skov",
+    location: "Aarhus C",
     creator: maria._id,
     attendees: [rasmus._id, anne._id],
   });

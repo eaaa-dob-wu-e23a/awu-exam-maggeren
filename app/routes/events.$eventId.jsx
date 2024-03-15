@@ -20,11 +20,12 @@ export async function loader({ request, params }) {
   const event = await mongoose.models.Event.findById(params.eventId)
     .populate("creator")
     .populate("attendees");
+   let excludeUser = authUser ? { $ne: authUser._id } : {};
 
   const relatedEvents = await mongoose.models.Event.find({
     $and: [
       { _id: { $ne: event._id } }, // Exclude the current event
-      { attendees: { $in: event.attendees, $ne: authUser._id } },
+      { attendees: { $in: event.attendees,...excludeUser}},
     ],
   })
     .populate("creator")
